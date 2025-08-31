@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Finance Tracker</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(180deg, #fdfdfd, #f1f5f9);
+      color: #1f2937;
+    }
+    header {
+      background: linear-gradient(135deg, #3b82f6, #10b981);
+      color: white;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    header h1 { 
+      font-size: 3rem; 
+      margin-bottom: 0.5rem; 
+      font-weight: 700;
+    }
+    header p { 
+      font-size: 1.3rem; 
+      margin-bottom: 2rem; 
+      opacity: 0.9; 
+    }
+    header a {
+      padding: 1rem 2rem;
+      margin: 0 0.5rem;
+      border-radius: 8px;
+      background: white;
+      color: #1f2937;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    header a:hover { background: #facc15; color: #111; }
+
+    section { padding: 3rem 2rem; text-align: center; }
+
+    .features {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+    }
+    .card {
+      background: linear-gradient(135deg, #f97316, #facc15);
+      padding: 2rem;
+      border-radius: 16px;
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      width: 260px;
+      transition: transform 0.3s;
+    }
+    .card:hover { transform: translateY(-8px); }
+
+    .testimonial {
+      background: #e0f2fe;
+      color: #1e40af;
+      font-style: italic;
+      margin: 1.5rem auto;
+      padding: 1rem;
+      border-radius: 10px;
+      max-width: 500px;
+    }
+
+    .cta {
+      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 16px;
+      max-width: 700px;
+      margin: auto;
+      margin-bottom: 3rem;
+    }
+    .cta a {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 1rem 2rem;
+      background: white;
+      color: #1f2937;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+    .cta a:hover { background: #facc15; color: #111; }
+
+    footer {
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Track. Save. Grow. 🌱</h1>
+  <p>Your personal finance dashboard to control expenses and build savings effortlessly.</p>
+  <a href="#">Get Started</a>
+  <a href="#">Learn More</a>
+</header>
+
+<section>
+  <h2>✨ Features</h2>
+  <div class="features">
+    <div class="card"><h3>📌 Expense Tracking</h3><p>Log and categorize every spend effortlessly.</p></div>
+    <div class="card"><h3>⏰ Budgets & Alerts</h3><p>Stay on track with real-time reminders.</p></div>
+    <div class="card"><h3>📊 Reports & Graphs</h3><p>Visual insights for smarter decisions.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>💬 What Users Say</h2>
+  <p class="testimonial">“Finance Tracker helped me save ₹10,000 in just 3 months!”</p>
+  <p class="testimonial">“The colorful dashboard makes budgeting actually fun!”</p>
+</section>
+
+<section class="cta">
+  <h2>🚀 Take control of your money today</h2>
+  <a href="#">Sign Up Free</a>
+</section>
+
+<footer>
+  <p>© 2025 Finance Tracker | About | Privacy | Contact</p>
+</footer>
+
+</body>
+</html>
