@@ -1,38 +1,36 @@
+// src/pages/Signup.js
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "../firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
 function Signup() {
-  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   const handleSignup = async (e) => {
     e.preventDefault();
-    const { name, email, password } = formData;
+    setError("");
 
     if (!name || !email || !password) {
-      setError("All fields are required!");
+      setError("All fields are required");
       return;
     }
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-      // ✅ Set displayName in Firebase Auth
-      await updateProfile(userCredential.user, { displayName: name });
+      await updateProfile(user, { displayName: name });
 
-      // ✅ Also save in Firestore (optional, for more user info later)
-      await setDoc(doc(db, "users", userCredential.user.uid), {
+      await setDoc(doc(db, "users", user.uid), {
         name,
         email,
-        createdAt: new Date().toISOString(),
+        createdAt: new Date(),
       });
 
       navigate("/dashboard");
@@ -43,41 +41,70 @@ function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <form onSubmit={handleSignup} className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
-        {error && <p className="text-red-500 mb-2">{error}</p>}
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          value={formData.name}
-          onChange={handleChange}
-          className="w-full p-2 mb-3 border rounded"
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          className="w-full p-2 mb-3 border rounded"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          className="w-full p-2 mb-3 border rounded"
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
-        >
-          Sign Up
-        </button>
-      </form>
+    <div className="relative min-h-screen flex items-center justify-center px-4 bg-login before:absolute before:inset-0 before:bg-black/20 before:backdrop-blur-sm">
+      <div className="relative bg-white/80 backdrop-blur-md rounded-2xl shadow-md w-full max-w-md p-8 z-10">
+        <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
+          Create Account
+        </h2>
+
+        {error && (
+          <p className="text-red-500 bg-red-100 p-2 rounded-md text-center mb-4">
+            {error}
+          </p>
+        )}
+
+        <form onSubmit={handleSignup} className="space-y-5">
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Full Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              placeholder="Enter your full name"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="Enter your email"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Enter your password"
+              className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-emerald-500 text-white py-3 rounded-lg hover:bg-emerald-600 transition"
+          >
+            Sign Up
+          </button>
+        </form>
+
+        <p className="text-center text-gray-600 mt-6">
+          Already have an account?{" "}
+          <Link to="/login" className="text-emerald-500 font-medium hover:underline">
+            Log in
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

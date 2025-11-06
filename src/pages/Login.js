@@ -25,7 +25,7 @@ function Login() {
       
       <div className="relative bg-white/80 backdrop-blur-md rounded-2xl shadow-md w-full max-w-md p-8 z-10">
         <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
-          Welcome Back 👋
+          Welcome Back 
         </h2>
 
         {error && (
