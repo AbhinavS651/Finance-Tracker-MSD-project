@@ -44,7 +44,7 @@ function Income() {
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-6">
       <div className="bg-white/80 backdrop-blur-md shadow-lg rounded-2xl p-8 w-full max-w-md">
         <h2 className="text-3xl font-bold text-center text-green-700 mb-6">
-          💰 Add Income
+           Add Income
         </h2>
 
         <form onSubmit={handleAddIncome} className="flex flex-col gap-4">

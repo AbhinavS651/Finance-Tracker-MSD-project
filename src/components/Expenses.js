@@ -43,7 +43,7 @@ function Expenses() {
     <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center p-6">
       <div className="bg-white/80 backdrop-blur-md shadow-lg rounded-2xl p-8 w-full max-w-md">
         <h2 className="text-3xl font-bold text-center text-red-600 mb-6">
-          💸 Add Expense
+           Add Expense
         </h2>
 
         <form onSubmit={handleAddExpense} className="flex flex-col gap-4">

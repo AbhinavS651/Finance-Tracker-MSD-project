@@ -1,99 +1,83 @@
 import React, { useState } from "react";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import loginBg from "../assets/login-bg.jpg";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebaseConfig";
 
 function Signup() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleSignup = async (e) => {
     e.preventDefault();
+    const { name, email, password } = formData;
+
+    if (!name || !email || !password) {
+      setError("All fields are required!");
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(userCredential.user, {
-        displayName: `${firstName} ${lastName}`,
+
+      // ✅ Set displayName in Firebase Auth
+      await updateProfile(userCredential.user, { displayName: name });
+
+      // ✅ Also save in Firestore (optional, for more user info later)
+      await setDoc(doc(db, "users", userCredential.user.uid), {
+        name,
+        email,
+        createdAt: new Date().toISOString(),
       });
+
       navigate("/dashboard");
     } catch (err) {
+      console.error(err);
       setError(err.message);
     }
   };
 
   return (
-    <div
-      className="min-h-screen flex items-center justify-center bg-cover bg-center"
-      style={{
-        backgroundImage: `url(${loginBg})`,
-      }}
-    >
-      <div className="bg-white/70 backdrop-blur-md p-8 rounded-2xl shadow-lg w-96 border border-gray-200">
-        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          Create Your Account 
-        </h2>
-
-        <form onSubmit={handleSignup} className="flex flex-col gap-4">
-          <input
-            type="text"
-            placeholder="First Name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-            className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400"
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-            className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400"
-          />
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400"
-          />
-
-          {error && <p className="text-red-500 text-center text-sm">{error}</p>}
-
-          {/* 🌿 Stylish gradient Sign Up button */}
-          <button
-            type="submit"
-            className="bg-gradient-to-r from-emerald-400 to-teal-500 text-white font-semibold py-2 rounded-lg 
-                       hover:from-emerald-500 hover:to-teal-600 hover:shadow-lg hover:shadow-emerald-200/50 
-                       transition-all duration-300"
-          >
-            Sign Up
-          </button>
-        </form>
-
-        <p className="text-center text-sm mt-4 text-gray-700">
-          Already have an account?{" "}
-          <span
-            onClick={() => navigate("/login")}
-            className="text-emerald-600 cursor-pointer hover:underline"
-          >
-            Log In
-          </span>
-        </p>
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form onSubmit={handleSignup} className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
+        {error && <p className="text-red-500 mb-2">{error}</p>}
+        <input
+          type="text"
+          name="name"
+          placeholder="Full Name"
+          value={formData.name}
+          onChange={handleChange}
+          className="w-full p-2 mb-3 border rounded"
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          className="w-full p-2 mb-3 border rounded"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          className="w-full p-2 mb-3 border rounded"
+        />
+        <button
+          type="submit"
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition"
+        >
+          Sign Up
+        </button>
+      </form>
     </div>
   );
 }
